@@ -1,0 +1,60 @@
+    /* Estilos para el video y el boton de desplazamiento*/
+    .btnBajar span {
+        display: block;
+        width: 20px;
+        height: 20px;
+        border-bottom: 1px solid black;
+        border-right: 1px solid black;
+        transform: rotate(45deg);
+        margin: -10px;
+        animation: animate 2s infinite;
+      }
+  
+      .btnBajar span:nth-child(2) {
+        animation-delay: -0.2s;
+      }
+  
+      .btnBajar span:nth-child(3) {
+        animation-delay: -0.4s;
+      }
+  
+      @keyframes animate {
+        0% {
+          opacity: 0;
+          transform: rotate(45deg) translate(-20px, -20px);
+        }
+  
+        50% {
+          opacity: 1;
+        }
+  
+        100% {
+          opacity: 0;
+          transform: rotate(45deg) translate(20px, 20px);
+        }
+      }
+  
+      .embed-responsive {
+        padding: 2rem;
+        background: #000;
+      }
+    
+
+      @media      (min-width:1390px){
+        .txtBienvenida{
+          font-size: 180%;
+        }
+        .txtTitulo{
+          font-size: 4rem;
+        }
+        
+
+      }
+      @media      (max-width:320px){
+        p.txtBienvenida{
+          font-size: 100%;
+        }
+        .txtTitulo{
+          
+        }
+      }

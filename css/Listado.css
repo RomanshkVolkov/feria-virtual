@@ -1,0 +1,72 @@
+.miBoton {
+    height: fit-content;
+}
+*{
+
+    text-decoration: none;
+}
+.buscador {
+    margin-top: 25px;
+}
+
+
+
+.escudo {
+    width: 70px;
+    max-width: 89px;
+    max-height: 119px;
+}
+
+
+
+.universidades {
+    margin-top: 25px;
+}
+
+.nombreUni {
+    overflow-wrap: break-word;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.logoUni {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.universidad {
+    margin-top: 35px;
+}
+
+a:hover {
+    text-decoration: none;
+    }
+      a:active {
+    text-decoration: none;
+    }
+  
+  
+  .dr:hover {
+    background: var(--hover-listado);
+    cursor: pointer;
+  }
+ 
+  img:not([src]) {
+    visibility: hidden;
+  }
+
+  /* Fixes Firefox anomaly during image load */
+  @-moz-document url-prefix() {
+    img:-moz-loading {
+      visibility: hidden;
+    }
+  }
+  
+      a:hover {
+text-decoration: none;
+}
+a:active {
+text-decoration: none;
+}
