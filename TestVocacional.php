@@ -296,31 +296,57 @@ include_once("Componentes/header.php");
     console.log("So: "+puntajeSo)
     console.log("Ad: "+puntajeAd)
 
+
+
+    let filters = new Map([
+        ['1_Masculino', filter1],
+        ['1_Femenino', filter2],
+        ['2_Masculino', filter3],
+        ['2_Femenino', filter4],
+        ['3_Masculino', filter5],
+        ['3_Femenino', filter6],
+
+    ]);
+
+    (function category(edad, genero) {
+        let condition = `${edad}_${genero}`
+
+        let filter = filters.get(condition)
+
+        filter()
+
+    })()
+
+
+
     function filter1() {
-        console.log(edad);
-    }
+
+        console.log('filtro 1: '+edad);
+    };
+
+    function filter2() {
+        console.log('filtro 2: '+edad);
+    };
+
     function filter3() {
-        console.log(edad);
-    }
+        console.log('filtro 3: '+edad);
+    };
 
-    const rangoEdad = {
-        1: filter1,
-        2: filter1,
-        3: filter3,
+    function filter4() {
+        console.log('filtro 4: '+edad);
+    };
 
-    }
+    function filter5() {
+        console.log('filtro 5: '+edad);
+    };
+
+    function filter6() {
+        console.log('filtro 6: '+edad);
+    };
 
     
 
-/*
-    const selectGenero1 = {
-        Masculino: 
-        Femenino:
-    }
-*/
-    const handler = rangoEdad[edad];
-
-    handler(edad);
+    
     
 }
 
