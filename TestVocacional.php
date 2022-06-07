@@ -150,10 +150,23 @@ include_once("Componentes/header.php");
                     </button>
                 </div>
                 <div class="row justify-content-center mt-3">
-                    <button type="submit" onclick='document.getElementById("error").style.display = "block";' class="btn btn-success col-12 col-md-7">Concluir Evaluación</button>
+                    <button type="submit" id="enviar" class="btn btn-success col-12 col-md-7">Concluir Evaluación</button>
                 </div>
                 <div class="row justify-content-center mt-2">
                     <span id="error" style="display: none;">Revise que ha respondido todos los grupos.</span>
+                </div>
+                <div><!-- resultados -->
+                <input type="hidden" id="Centiles" name="Centiles" value="0">
+                <input type="hidden" id="centilAl" name="centilAl" value="0">
+                <input type="hidden" id="centilMe" name="centilMe" value="0">
+                <input type="hidden" id="centilCa" name="centilCa" value="0">
+                <input type="hidden" id="centilCi" name="centilCi" value="0">
+                <input type="hidden" id="centilPe" name="centilPe" value="0">
+                <input type="hidden" id="centilAr" name="centilAr" value="0">
+                <input type="hidden" id="centilLi" name="centilLi" value="0">
+                <input type="hidden" id="centilMu" name="centilMu" value="0">
+                <input type="hidden" id="centilSo" name="centilSo" value="0">
+                <input type="hidden" id="centilAd" name="centilAd" value="0">
                 </div>
             </div>
             <br>
@@ -165,9 +178,11 @@ include_once("Componentes/header.php");
 
     <script src="js/TestVocacional.js"></script>
     <button type="button" onclick="seleccionar();">Seleccionar todos</button>
-    <button type="button" onclick="calificar()">Test de calificacion</button>
 </body>
 <script>
+    let mySubmit = document.getElementById("enviar")
+    mySubmit.addEventListener("click", calificar);
+
     function seleccionar() {
         
         const responses = document.getElementsByClassName("respuesta");
@@ -201,17 +216,30 @@ include_once("Componentes/header.php");
         let puntajeAd = 0;
         let ActName = '';
 
-        let cetilAl = 0;
-        let cetilMe = 0;
-        let cetilCa = 0;
-        let cetilCi = 0;
-        let cetilPe = 0;
-        let cetilAr = 0;
-        let cetilLi = 0;
-        let cetilMu = 0;
-        let cetilSo = 0;
-        let cetilAd = 0;
+        let opAl = [];
+        let opMe = [];
+        let opCa = [];
+        let opCi = [];
+        let opPe = [];
+        let opAr = [];
+        let opLi = [];
+        let opMu = [];
+        let opSo = [];
+        let opAd = [];
+
+        let centilAl = 0;
+        let centilMe = 0;
+        let centilCa = 0;
+        let centilCi = 0;
+        let centilPe = 0;
+        let centilAr = 0;
+        let centilLi = 0;
+        let centilMu = 0;
+        let centilSo = 0;
+        let centilAd = 0;
         
+        //Relacion de respuestas con sus respectivas areas
+
         let puntajeAlData = [
         "g1parb", "g1pbra", "g1pcra", "g1pgrb", "g1phrb", "g1pjra", "g1pkrb", "g1plra", "g1pmrb", "g1prrb", "g1psra", "g1ptra", "g1pxrb", "g1pyrb", "g1pzra", "g2pAra", "g2pBrb", "g2pCra", "g2pDrb", "g2pEra", "g2pFrb", "g2pGrb", "g2pHra", "g2pJrb", "g2pKrb", "g2pLra", "g2pMra", "g2pNrb", "g2pPrb", "g2pQra", "g2pRrb", "g2pSra", "g2pTrb", "g3pdrb", "g3perb", "g3pfra", "g3pgrb", "g3phra", "g3pjrb", "g3pkrb", "g3plra", "g3pmra", "g3pnra", "g3pprb", "g3pqra", "g4pDrb", "g4pEra", "g4pFrb", "g4pRrb", "g4pSrb", "g4pTra", "g4pgrb", "g4phrb", "g4pjra", "g5pkrb", "g5plrb", "g5pmra", "g5prrb", "g5psra", "g5ptra", "g6pKrb", "g6pLrb", "g6pMra", "g6pNra", "g6pPrb", "g6pQrb", "g6pRra", "g6pSra", "g6pTrb", "g7parb", "g7pbra", "g7pcrb", "g7pdra", "g7pera", "g7pfrb", "g7pkrb", "g7plra", "g7pmrb", "g8pArb", "g8pBrb", "g8pCra", "g8pUrb", "g8pVra", "g8pWra", "g9pdrb", "g9pera", "g9pfrb", "g10pArb", "g10pBra", "g10pCrb", "g10pNrb", "g10pPrb", "g10pQra", "g10pUrb", "g10pVra","g10pWra", "g11parb", "g11pbra", "g11pcra", "g11pdrb", "g11perb", "g11pfra", "g11pgra","g11phrb", "g11pjrb", "g11pkrb", "g11plrb", "g11pmra", "g12pDrb", "g12pErb", "g12pFra","g12pGrb", "g12pHra", "g12pJrb", "g12pKrb", "g12pLra", "g12pMrb", "g12pNra", "g12pPrb","g12pQrb", "g12pUrb", "g12pVra", "g12pWrb"
         ]
@@ -256,15 +284,19 @@ include_once("Componentes/header.php");
             "g1pArb", "g1pBrb", "g1pCra", "g2pRrb", "g2pSrb", "g2pTra", "g2pdrb", "g2perb", "g2pfra", "g2pnrb", "g2ppra", "g2pqrb", "g3parb", "g3pbra", "g3pcrb", "g3pxrb", "g3pyrb", "g3pzra", "g3pAra", "g3pBrb", "g3pCrb", "g3pKrb", "g3pLrb", "g3pMra", "g3pRrb", "g3pSrb", "g3pTra", "g4pGrb", "g4pHrb", "g4pJra", "g4pKrb", "g4pLra", "g4pMrb", "g4pRrb", "g4pSra", "g4pTrb", "g4para", "g4pbrb", "g4pcrb", "g4pdrb", "g4perb", "g4pfra", "g4pnrb", "g4ppra", "g4pqrb", "g5pgra", "g5phrb", "g5pjrb", "g5pxra", "g5pyrb", "g5pzrb", "g5pKra", "g5pLrb", "g5pMra", "g6pArb", "g6pBra", "g6pCrb", "g6pXra", "g6pYrb", "g6pZrb", "g6pgra", "g6phrb", "g6pjrb", "g6pkrb", "g6plrb", "g6pmra", "g7para", "g7pbrb", "g7pcrb", "g7pgrb", "g7phra", "g7pjrb", "g7pnrb", "g7ppra", "g7pqrb", "g7pArb", "g7pBra", "g7pCrb", "g7pDra", "g7pErb", "g7pFrb", "g8pArb", "g8pBra", "g8pCrb", "g8pDra", "g8pErb", "g8pFra", "g8pKra", "g8pLrb", "g8pMrb", "g9parb", "g9pbrb", "g9pcra", "g9pura", "g9pvrb", "g9pwrb", "g9pArb", "g9pBrb", "g9pCra", "g9pGrb", "g9pHra", "g9pJra", "g9pRrb", "g9pSrb", "g9pTra", "g10pKrb", "g10pLra", "g10pMra", "g10pdra", "g10perb", "g10pfrb", "g10pkrb", "g10plra", "g10pmrb", "g10pnra", "g10pprb", "g10pqrb", "g11prrb", "g11psrb", "g11ptra", "g11pArb", "g11pBra", "g11pCrb", "g11pDrb", "g11pEra", "g11pFra", "g11pKra", "g11pLrb", "g11pMrb", "g11pRrb", "g11pSra", "g11pTrb", "g12pAra", "g12pBra", "g12pCrb", "g12pGra", "g12pHrb", "g12pJrb", "g12pNrb", "g12pPrb", "g12pQra", "g12pRra", "g12pSrb", "g12pTrb", "g12pUra", "g12pVrb", "g12pWra", "g12pXrb", "g12pYrb", "g12pZra", "g12prrb", "g12psrb", "g12ptra", 
         ]        
             
-    const responses = document.getElementsByClassName("respuesta");
+    const responses = document.getElementsByClassName("respuesta");//obtiene todos los checkbox
+    //deben tener la clase respuesta
     const edad = document.getElementById('edad').value;
     let genero = document.getElementById('genero').value;
 
 
 
     Array.from(responses).forEach(function(value, index, responses) {
+
         if (responses[index].checked === true) {
+
             responses[index].value = 1;
+
             ActName = responses[index].name; //selecciona el atributo name del input con la clase respuesta
             if (Array.from(puntajeAlData).includes(ActName)) {
                 puntajeAL++;
@@ -317,16 +349,16 @@ include_once("Componentes/header.php");
         ['1_Masculino', filter1],
         ['1_Femenino', filter2],
         ['2_Masculino', filter3],
-        ['2_Femenino', filter4],
-        ['3_Masculino', filter5],
-        ['3_Femenino', filter6],
+        ['2_Femenino', filter3],
+        ['3_Masculino', filter4],
+        ['3_Femenino', filter4],
 
     ]);
 
 
     (function category(edad, genero) {
         let condition = `${edad}_${genero}`
-        console.log(condition)
+
         let filter = filters.get(condition)
 
         filter()
@@ -336,83 +368,264 @@ include_once("Componentes/header.php");
 
 
     function filter1() {
-        //Aire Libre
-        //let opAl = [13, 16, 18, 19, 22, 26, 29, 31, 33, 35, 37, 38, 40, 41, 43, 45, 46, 48, 50, 52, 55, 59, 62, 63, 65, 68, 82];
+        
+        //AIRE LIBRE
 
-        let opAl = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 5, 5, 5, 10, 10, 10, 10, 15, 15, 15, 20, 20, 25, 25, 30, 30, 35, 35, 40, 45, 45, 50, 55, 55, 60, 60, 65, 70, 70, 75, 75, 80, 80, 85, 85, 85, 90, 90, 90, 90, 95, 95, 95, 96, 97, 97, 98, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+        opAl = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 5, 5, 5, 10, 10, 10, 10, 15, 15, 15, 20, 20, 25, 25, 30, 30, 35, 35, 40, 45, 45, 50, 55, 55, 60, 60, 65, 70, 70, 75, 75, 80, 80, 85, 85, 85, 90, 90, 90, 90, 95, 95, 95, 96, 97, 97, 98, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
 
 
-       //AIRE LIBRE
-        cetilAl = opAl[puntajeAL];
-        console.log(opAl[20])
+        centilAl = opAl[puntajeAL];
+
         // MECANICA
-        let opMe = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 3, 4, 5, 5, 10, 10, 10, 15, 15, 20, 25, 25, 30, 35, 40, 45, 45, 50, 55, 60, 65, 70, 75, 75, 80, 85, 85, 90, 90, 90, 95, 95, 96, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+        opMe = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 3, 4, 5, 5, 10, 10, 10, 15, 15, 20, 25, 25, 30, 35, 40, 45, 45, 50, 55, 60, 65, 70, 75, 75, 80, 85, 85, 90, 90, 90, 95, 95, 96, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
 
-        cetilMe = opMe[puntajeMe];
+        centilMe = opMe[puntajeMe];
         //CALCULO
 
-        let opCa = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 5, 10, 10, 15, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 85, 90, 90, 95, 96, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+        opCa = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 5, 10, 10, 15, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 85, 90, 90, 95, 96, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
 
-        cetilCa = opCa[puntajeCa];
+        centilCa = opCa[puntajeCa];
+
         //CIENCIA
-        let opCi = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4, 5, 5, 5, 10, 10, 10, 15, 15, 20, 20, 25, 30, 30, 35, 40, 45, 45, 50, 55, 60, 65, 65, 70, 75, 75, 80, 80, 85, 85, 90, 90, 90, 95, 95, 96, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99];
+        opCi = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4, 5, 5, 5, 10, 10, 10, 15, 15, 20, 20, 25, 30, 30, 35, 40, 45, 45, 50, 55, 60, 65, 65, 70, 75, 75, 80, 80, 85, 85, 90, 90, 90, 95, 95, 96, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99];
 
-        cetilCi = opCi[puntajeCi];
+        centilCi = opCi[puntajeCi];
+
         //PERSUASIVA
-        let opPe = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 4, 5, 5, 10, 10, 10, 15, 15, 20, 25, 25, 30, 35, 40, 45, 50, 55, 55, 60, 65, 70, 75, 75, 80, 85, 85, 90, 90, 95, 95, 95, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+        opPe = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 4, 5, 5, 10, 10, 10, 15, 15, 20, 25, 25, 30, 35, 40, 45, 50, 55, 55, 60, 65, 70, 75, 75, 80, 85, 85, 90, 90, 95, 95, 95, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
 
-        cetilPe = opPe[puntajePe];
+        centilPe = opPe[puntajePe];
 
         //ARTES
 
-        let opAr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 5, 10, 10, 15, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 85, 90, 90, 95, 95, 97, 97, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+        opAr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 5, 10, 10, 15, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 85, 90, 90, 95, 95, 97, 97, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99];
 
-        for (let i = 0; i < opAr.length; i++) {
-            if (puntajeAr <= opAr[i]) {
-                cetilAr = valPe[i];//comparte cetil con Pe
-            }
-            
-        }
+        centilAr = opAr[puntajeAr];
+
         //LINGUISTICA
 
-        let opLi = [];
-        let valLi = [];
+        opLi = [1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 5, 10, 10, 15, 20, 25, 30, 35, 45, 50, 55, 60, 70, 75, 80, 85, 85, 90, 90, 95, 96, 97, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+        
+        centilLi = opLi[puntajeLi];
+
         //MUSICA
-        let opMu = [];
-        let valMu = [];
+        opMu = [2, 3, 4, 5, 5, 10, 10, 15, 20, 25, 30, 35, 40, 50, 55, 60, 65, 70, 75, 80, 85, 90, 90, 95, 96, 97, 98, 99, 99, 99, 99];
+
+        centilMu = opMu[puntajeMu];
+
         //SOCIAL O ASISTENCIA
-        let opSo = [];
-        let valSo = [];
+        opSo = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 4, 5, 5, 5, 10, 10, 10, 15, 15, 20, 20, 25, 30, 30, 35, 40, 45, 45, 50, 55, 60, 60, 65, 70, 75, 75, 80, 80, 85, 85, 90, 90, 90, 95, 95, 96, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+        
+        centilSo = opSo[puntajeSo];
+
         //ADMINISTRATIVA
-        let opAd = [];
+        opAd = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 4, 5, 5, 5, 10, 10, 10, 15, 15, 19, 20, 20, 25, 30, 30, 35, 40, 40, 45, 50, 50, 55, 60, 65, 65, 70, 70, 75, 80, 80, 85, 85, 85, 90, 90, 90, 95, 95, 95, 97, 97, 98, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+
+        centilAd = opAd[puntajeAd];
+
         console.log('filtro 1: '+edad);
     };
 
     function filter2() {
+        //AIRE LIBRE
+
+        opAl = [1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 4, 4, 5, 5, 5, 10, 10, 10, 10, 15, 15, 20, 20, 25, 25, 30, 30, 35, 35, 40, 45, 45, 50, 55, 55, 60, 60, 65, 70, 70, 75, 75, 80, 80, 85, 85, 85, 90, 90, 90, 95, 95, 95, 95, 97, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+
+        centilAl = opAl[puntajeAL];
+        
+        // MECANICA
+        opMe = [1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 4, 5, 5, 10, 10, 15, 15, 20, 25, 30, 35, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 85, 90, 90, 95, 95, 95, 97, 97, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+
+        centilMe = opMe[puntajeMe];
+
+        //CALCULO
+
+        opCa = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 3, 5, 5, 10, 10, 15, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 80, 85, 90, 90, 95, 95, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+
+        centilCa = opCa[puntajeCa];
+
+        //CIENCIA
+        opCi = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4, 5, 5, 10, 10, 10, 15, 15, 15, 20, 20, 25, 30, 30, 35, 40, 40, 45, 50, 55, 55, 60, 65, 70, 70, 75, 75, 80, 85, 85, 85, 90, 90, 90, 95, 95, 96, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+
+        centilCi = opCi[puntajeCi];
+
+        //PERSUASIVA
+        opPe = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 4, 5, 5, 5, 10, 10, 10, 15, 15, 20, 25, 25, 30, 35, 35, 40, 45, 50, 55, 60, 60, 65, 70, 75, 75, 80, 85, 85, 85, 90, 90, 95, 95, 95, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+
+        centilPe = opPe[puntajePe];
+
+        //ARTES
+
+        opAr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 5, 10, 10, 15, 20, 20, 25, 30, 35, 40, 50, 55, 60, 65, 70, 75, 80, 85, 85, 90, 90, 95, 95, 97, 97, 98, 99, 99, 99, 99, 99, 99, 99, 99];
+
+        centilAr = opAr[puntajeAr];
+
+        //LINGUISTICA
+
+        opLi = [1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 5, 10, 10, 15, 20, 25, 25, 30, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 90, 95, 95, 97, 97, 98, 99, 99, 99, 99, 99, 99, 99, 99];
+        
+        centilLi = opLi[puntajeLi];
+
+        //MUSICA
+        opMu = [1, 1, 1, 1, 2, 3, 5, 5, 10, 15, 15, 20, 25, 35, 40, 45, 55, 60, 70, 75, 80, 85, 90, 90, 95, 95, 97, 98, 99, 99, 99];
+
+        centilMu = opMu[puntajeMu];
+
+        //SOCIAL O ASISTENCIA
+        opSo = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4, 5, 5, 10, 10, 15, 15, 15, 20, 20, 25, 25, 30, 30, 35, 40, 45, 45, 50, 55, 60, 60, 65, 70, 75, 75, 80, 80, 85, 85, 90, 90, 90, 95, 95, 95, 97, 97, 98, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+        
+        centilSo = opSo[puntajeSo];
+
+        //ADMINISTRATIVA
+        opAd = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4, 5, 5, 5, 5, 10, 10, 10, 15, 15, 15, 20, 20, 25, 25, 30, 30, 35, 40, 40, 45, 45, 50, 55, 55, 60, 65, 65, 70, 70, 75, 75, 80, 80, 85, 85, 85, 90, 90, 90, 95, 95, 95, 96, 97, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+
+        centilAd = opAd[puntajeAd];
         console.log('filtro 2: '+edad);
     };
 
     function filter3() {
+       //AIRE LIBRE
+        opAl = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 5, 5, 5, 10, 10, 10, 10, 15, 15, 15, 20, 20, 25, 25, 30, 30, 35, 35, 40, 45, 45, 50, 55, 55, 60, 60, 65, 70, 70, 75, 75, 80, 80, 85, 85, 85, 90, 90, 90, 90, 95, 95, 95, 96, 97, 97, 98, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+
+        centilAl = opAl[puntajeAL];
+
+        // MECANICA
+        opMe = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 3, 4, 5, 5, 10, 10, 10, 15, 15, 20, 25, 25, 30, 35, 40, 45, 45, 50, 55, 60, 65, 70, 75, 75, 80, 85, 85, 90, 90, 90, 95, 95, 96, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+
+        centilMe = opMe[puntajeMe];
+
+        //CALCULO
+
+        opCa = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 5, 10, 10, 15, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 85, 90, 90, 95, 96, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+
+        centilCa = opCa[puntajeCa];
+
+        //CIENCIA
+        opCi = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4, 5, 5, 5, 10, 10, 10, 15, 15, 20, 20, 25, 30, 30, 35, 40, 45, 45, 50, 55, 60, 65, 65, 70, 75, 75, 80, 80, 85, 85, 90, 90, 90, 95, 95, 96, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99];
+
+        centilCi = opCi[puntajeCi];
+
+        //PERSUASIVA
+        opPe = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 4, 5, 5, 10, 10, 10, 15, 15, 20, 25, 25, 30, 35, 40, 45, 50, 55, 55, 60, 65, 70, 75, 75, 80, 85, 85, 90, 90, 95, 95, 95, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+
+        centilPe = opPe[puntajePe];
+
+        //ARTES
+
+        opAr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 5, 10, 10, 15, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 85, 90, 90, 95, 95, 97, 97, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+
+        centilAr = opAr[puntajeAr];
+
+        //LINGUISTICA
+
+        opLi = [1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 5, 10, 10, 15, 20, 25, 30, 35, 45, 50, 55, 60, 70, 75, 80, 85, 85, 90, 90, 95, 96, 97, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+        
+        centilLi = opLi[puntajeLi];
+
+        //MUSICA
+        opMu = [2, 3, 4, 5, 5, 10, 10, 15, 20, 25, 30, 35, 40, 50, 55, 60, 65, 70, 75, 80, 85, 90, 90, 95, 96, 97, 98, 99, 99, 99, 99];
+
+        centilMu = opMu[puntajeMu];
+
+        //SOCIAL O ASISTENCIA
+        opSo = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 4, 5, 5, 5, 10, 10, 10, 15, 15, 20, 20, 25, 30, 30, 35, 40, 45, 45, 50, 55, 60, 60, 65, 70, 75, 75, 80, 80, 85, 85, 90, 90, 90, 95, 95, 96, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+        
+        centilSo = opSo[puntajeSo];
+
+        //ADMINISTRATIVA
+        opAd = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 4, 5, 5, 5, 10, 10, 10, 15, 15, 19, 20, 20, 25, 30, 30, 35, 40, 40, 45, 50, 50, 55, 60, 65, 65, 70, 70, 75, 80, 80, 85, 85, 85, 90, 90, 90, 95, 95, 95, 97, 97, 98, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+
+        centilAd = opAd[puntajeAd];
+
         console.log('filtro 3: '+edad);
     };
 
     function filter4() {
+        
+        //AIRE LIBRE
+        opAl = [1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 11, 4, 4, 5, 5, 5, 10, 10, 10, 10, 15, 15, 20, 20, 25, 25, 30, 30, 35, 35, 40, 45, 45, 50, 55, 55, 60, 60, 65, 70, 70, 75, 75, 80, 80, 85, 85, 85, 90, 90, 90, 95, 95, 95, 95, 97, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+
+        centilAl = opAl[puntajeAL];
+
+        // MECANICA
+        opMe = [1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 4, 5, 5, 10, 10, 15, 15, 20, 25, 30, 35, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 85, 90, 90, 95, 95, 95, 97, 97, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+
+        centilMe = opMe[puntajeMe];
+
+        //CALCULO
+
+        opCa = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 3, 5, 5, 10, 10, 15, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 80, 85, 90, 90, 95, 95, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+
+        centilCa = opCa[puntajeCa];
+
+        //CIENCIA
+        opCi = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4, 5, 5, 10, 10, 10, 15, 15, 15, 20, 20, 25, 30, 30, 35, 40, 40, 45, 50, 55, 55, 60, 65, 70, 70, 75, 75, 80, 85, 85, 85, 90, 90, 90, 95, 95, 96, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+
+        centilCi = opCi[puntajeCi];
+
+        //PERSUASIVA
+        opPe = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 4, 5, 5, 5, 10, 10, 10, 15, 15, 20, 25, 25, 30, 35, 35, 40, 45, 50, 55, 60, 60, 65, 70, 75, 75, 80, 85, 85, 85, 90, 90, 95, 95, 95, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+
+        centilPe = opPe[puntajePe];
+
+        //ARTES
+
+        opAr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 5, 10, 10, 15, 20, 20, 25, 30, 35, 40, 50, 55, 60, 65, 70, 75, 80, 85, 85, 90, 90, 95, 95, 97, 97, 98, 99, 99, 99, 99, 99, 99, 99, 99];
+
+        centilAr = opAr[puntajeAr];
+
+        //LINGUISTICA
+
+        opLi = [1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 5, 10, 10, 15, 20, 25, 25, 30, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 90, 95, 95, 97, 97, 98, 99, 99, 99, 99, 99, 99, 99, 99];
+        
+        centilLi = opLi[puntajeLi];
+
+        //MUSICA
+        opMu = [1, 1, 1, 1, 2, 3, 5, 5, 10, 15, 15, 20, 25, 35, 40, 45, 55, 60, 70, 75, 80, 85, 90, 90, 95, 95, 97, 98, 99, 99, 99];
+
+        centilMu = opMu[puntajeMu];
+
+        //SOCIAL O ASISTENCIA
+        opSo = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4, 5, 5, 10, 10, 15, 15, 15, 20, 20, 25, 25, 30, 30, 35, 40, 45, 45, 50, 55, 60, 60, 65, 70, 75, 75, 80, 80, 85, 85, 90, 90, 90, 95, 95, 95, 97, 97, 98, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+        
+        centilSo = opSo[puntajeSo];
+
+        //ADMINISTRATIVA
+        opAd = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4, 5, 5, 5, 5, 10, 10, 10, 15, 15, 15, 20, 20, 25, 25, 30, 30, 35, 40, 40, 45, 45, 50, 55, 55, 60, 65, 65, 70, 70, 75, 75, 80, 80, 85, 85, 85, 90, 90, 90, 95, 95, 95, 96, 97, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
+
+        centilAd = opAd[puntajeAd];
+
         console.log('filtro 4: '+edad);
     };
 
-    function filter5() {
-        console.log('filtro 5: '+edad);
-    };
+    console.log('centilAl: '+centilAl);
+    console.log('centilMe: '+centilMe);
+    console.log('centilCa: '+centilCa);
+    console.log('centilCi: '+centilCi);
+    console.log('centilPe: '+centilPe);
+    console.log('centilAr: '+centilAr);
+    console.log('centilLi: '+centilLi);
+    console.log('centilMu: '+centilMu);
+    console.log('centilSo: '+centilSo);
+    console.log('centilAd: '+centilAd);
 
-    function filter6() {
-        console.log('filtro 6: '+edad);
-    };
+    let Centiles = [centilAl, centilMe, centilCa, centilCi, centilPe, centilAr, centilLi, centilMu, centilSo, centilAd];
 
-    console.log('cetilAl: '+cetilAl);
+    document.getElementById('centilAl').value = centilAl;
+    document.getElementById('centilMe').value = centilMe;
+    document.getElementById('centilCa').value = centilCa;
+    document.getElementById('centilCi').value = centilCi;
+    document.getElementById('centilPe').value = centilPe;
+    document.getElementById('centilAr').value = centilAr;
+    document.getElementById('centilLi').value = centilLi;
+    document.getElementById('centilMu').value = centilMu;
+    document.getElementById('centilSo').value = centilSo;
+    document.getElementById('centilAd').value = centilAd;
 
-    
+    document.getElementById("error").style.display = "block";
     
 }
 
     </script>
+    
 </html>
