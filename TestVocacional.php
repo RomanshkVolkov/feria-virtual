@@ -330,16 +330,16 @@ include_once("Componentes/header.php");
             }
         }
     })
-    console.log("AL: "+puntajeAL)
-    console.log("Me: "+puntajeMe)
-    console.log("Ca: "+puntajeCa)
-    console.log("Ci: "+puntajeCi)
-    console.log("Pe: "+puntajePe)
-    console.log("Ar: "+puntajeAr)
-    console.log("Li: "+puntajeLi)
-    console.log("Mu: "+puntajeMu)
-    console.log("So: "+puntajeSo)
-    console.log("Ad: "+puntajeAd)
+    //console.log("AL: "+puntajeAL)
+    //console.log("Me: "+puntajeMe)
+    //console.log("Ca: "+puntajeCa)
+    //console.log("Ci: "+puntajeCi)
+    //console.log("Pe: "+puntajePe)
+    //console.log("Ar: "+puntajeAr)
+    //console.log("Li: "+puntajeLi)
+    //console.log("Mu: "+puntajeMu)
+    //console.log("So: "+puntajeSo)
+    //console.log("Ad: "+puntajeAd)
 
 
     if (genero === '0') genero = 'Masculino' 
@@ -423,7 +423,6 @@ include_once("Componentes/header.php");
 
         centilAd = opAd[puntajeAd];
 
-        console.log('filtro 1: '+edad);
     };
 
     function filter2() {
@@ -480,7 +479,7 @@ include_once("Componentes/header.php");
         opAd = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4, 5, 5, 5, 5, 10, 10, 10, 15, 15, 15, 20, 20, 25, 25, 30, 30, 35, 40, 40, 45, 45, 50, 55, 55, 60, 65, 65, 70, 70, 75, 75, 80, 80, 85, 85, 85, 90, 90, 90, 95, 95, 95, 96, 97, 97, 97, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99];
 
         centilAd = opAd[puntajeAd];
-        console.log('filtro 2: '+edad);
+        
     };
 
     function filter3() {
@@ -537,7 +536,6 @@ include_once("Componentes/header.php");
 
         centilAd = opAd[puntajeAd];
 
-        console.log('filtro 3: '+edad);
     };
 
     function filter4() {
@@ -595,19 +593,18 @@ include_once("Componentes/header.php");
 
         centilAd = opAd[puntajeAd];
 
-        console.log('filtro 4: '+edad);
     };
 
-    console.log('centilAl: '+centilAl);
-    console.log('centilMe: '+centilMe);
-    console.log('centilCa: '+centilCa);
-    console.log('centilCi: '+centilCi);
-    console.log('centilPe: '+centilPe);
-    console.log('centilAr: '+centilAr);
-    console.log('centilLi: '+centilLi);
-    console.log('centilMu: '+centilMu);
-    console.log('centilSo: '+centilSo);
-    console.log('centilAd: '+centilAd);
+    //console.log('centilAl: '+centilAl);
+    //console.log('centilMe: '+centilMe);
+    //console.log('centilCa: '+centilCa);
+    //console.log('centilCi: '+centilCi);
+    //console.log('centilPe: '+centilPe);
+    //console.log('centilAr: '+centilAr);
+    //console.log('centilLi: '+centilLi);
+    //console.log('centilMu: '+centilMu);
+    //console.log('centilSo: '+centilSo);
+    //console.log('centilAd: '+centilAd);
 
     let Centiles = [centilAl, centilMe, centilCa, centilCi, centilPe, centilAr, centilLi, centilMu, centilSo, centilAd];
 
